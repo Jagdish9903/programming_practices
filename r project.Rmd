@@ -1,0 +1,92 @@
+---
+title: "R"
+author: "Jagdish Suthar"
+date: "2023-07-30"
+output: word_document
+---
+```{r}
+data <- read.csv("cardio_train.csv")
+View(data)
+```
+```{r}
+library(pacman)
+head(data)
+```
+
+
+```{r}
+names(data)
+```
+```{r}
+class(data$id)
+```
+```{r}
+length(data)
+```
+```{r}
+length(data$id)
+```
+```{r}
+unique(data$height)
+```
+```{r}
+missing <- !complete.cases(data)
+data[missing,]
+```
+```{r}
+library(magrittr)
+library(dplyr)
+View(data)
+data %>% filter(ap_lo > 200)
+```
+```{r}
+data %>% mutate(gender_name = if_else(gender == 1, "male","female"))
+```
+```{r}
+head(data)
+```
+```{r}
+data %>% mutate(gend = if_else(gender==1,"male","female")) %>% select(id,gender,gend)
+```
+```{r}
+```
+
+
+```{r}
+```
+
+
+```{r}
+class(data$gender)
+```
+```{r}
+data %>% select(gender) %>% mutate(gender = recode(as.character(gender), '1' = "male", '2' ="female"))
+```
+```{r}
+summary(data)
+```
+```{r}
+gender <- c(data %>% select(gender) %>% mutate(gender = recode(as.character(gender), '1' = "male", '2' ="female")))
+```
+
+```{r}
+data <- subset(data,select = -gender)
+names(data)
+```
+```{r}
+data = cbind(data, Address = gender)
+```
+```{r}
+names(data)
+```
+```{r}
+a <- write.csv(data, "manipulated_data.csv")
+data <- read.csv("manipulated_data.csv")
+```
+```{r}
+library(ggplot2)
+library(dplyr)
+library(tidyverse)
+cardio = data
+cardio %>% drop_na(height) %>% ggplot(mapping = aes(height)) + geom_histogram()
+```
